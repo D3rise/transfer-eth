@@ -1,4 +1,4 @@
-const ABI = [
+const abi = [
   {
     inputs: [
       {
@@ -337,4 +337,3 @@ const ABI = [
     type: "function",
   },
 ];
-export default ABI;

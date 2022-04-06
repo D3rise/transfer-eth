@@ -11,7 +11,6 @@ contract TransfersV1 {
         string username;
         Role role;
         bytes32 secretHash;
-        uint256[] transfers;
         bool exists;
     }
     mapping(address => User) users;
@@ -51,16 +50,22 @@ contract TransfersV1 {
             "You're already registered yourself"
         );
 
-        uint256[] memory emptyTransfers;
-        users[msg.sender] = User(
-            username,
-            Role.USER,
-            secretHash,
-            emptyTransfers,
-            true
-        );
+        users[msg.sender] = User(username, Role.USER, secretHash, true);
         userLogins[username] = msg.sender;
         userLoginsArray.push(username);
+    }
+
+    function getUser(address userAddress)
+        external
+        view
+        returns (
+            string memory username,
+            Role role,
+            bool exists
+        )
+    {
+        User memory user = users[userAddress];
+        return (user.username, user.role, user.exists);
     }
 
     function getUserAddress(string memory username)
@@ -74,13 +79,11 @@ contract TransfersV1 {
 
     constructor() {
         bytes32 defaultPassword = keccak256(abi.encodePacked("12345"));
-        uint256[] memory emptyTransfers;
 
         users[0x034f8BEf70c534491218200638224900D84A7272] = User(
             "admin",
             Role.ADMIN,
             defaultPassword,
-            emptyTransfers,
             true
         );
         userLogins["admin"] = 0x034f8BEf70c534491218200638224900D84A7272;
@@ -90,7 +93,6 @@ contract TransfersV1 {
             "ivan",
             Role.ADMIN,
             defaultPassword,
-            emptyTransfers,
             true
         );
         userLogins["ivan"] = 0xBa385ca63bf96E52E961CbC976074460A8063DdC;
@@ -100,7 +102,6 @@ contract TransfersV1 {
             "tanya",
             Role.USER,
             defaultPassword,
-            emptyTransfers,
             true
         );
         userLogins["tanya"] = 0xf70A30A5cBc60aA60bAf289630c04f498360fe29;
@@ -110,7 +111,6 @@ contract TransfersV1 {
             "nadya",
             Role.USER,
             defaultPassword,
-            emptyTransfers,
             true
         );
         userLogins["nadya"] = 0x1CC97aAbCdFE64AAc7B9180e38Bd70C3826350D7;
@@ -120,7 +120,6 @@ contract TransfersV1 {
             "danil",
             Role.USER,
             defaultPassword,
-            emptyTransfers,
             true
         );
         userLogins["danil"] = 0xC9e53A87673beb129E13BEb6c35aD1dBD25b1308;
@@ -130,7 +129,6 @@ contract TransfersV1 {
             "maksim",
             Role.USER,
             defaultPassword,
-            emptyTransfers,
             true
         );
         userLogins["maksim"] = 0xB4d7C71899D820f72008DdA571e91D702b89A5f3;
@@ -183,9 +181,6 @@ contract TransfersV2 is TransfersV1 {
             false,
             true
         );
-
-        users[msg.sender].transfers.push(transferIds.length);
-        users[userLogins[receiverUsername]].transfers.push(transferIds.length);
 
         transferIds.push(transferIds.length);
     }
@@ -336,18 +331,12 @@ contract TransfersV3 is TransfersV2 {
         returns (
             string memory name,
             uint256 categoryId,
-            uint256[] memory acceptableCounts,
-            bool exists
+            uint256[] memory acceptableCounts
         )
     {
         Template memory template = templates[templateId];
         require(template.exists, "Template does not exist");
-        return (
-            template.name,
-            template.category,
-            template.acceptableCounts,
-            template.exists
-        );
+        return (template.name, template.category, template.acceptableCounts);
     }
 }
 
