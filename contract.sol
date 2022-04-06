@@ -298,7 +298,7 @@ contract TransfersV3 is TransfersV2 {
         onlyAdmin
     {
         require(
-            !templates[templateNames[name]].exists,
+            templateNames[name] == 0,
             "Template with this name already exists"
         );
 
@@ -337,6 +337,37 @@ contract TransfersV3 is TransfersV2 {
         Template memory template = templates[templateId];
         require(template.exists, "Template does not exist");
         return (template.name, template.category, template.acceptableCounts);
+    }
+
+    constructor() {
+        uint256[] memory giftCounts = new uint256[](3);
+        giftCounts[0] = 20000000000000000000;
+        giftCounts[1] = 40000000000000000000;
+        giftCounts[2] = 60000000000000000000;
+        templates[templateIds.length] = Template("Gift", 0, giftCounts, true);
+        templateNames["Gift"] = templateIds.length;
+        templateIds.push(templateIds.length);
+
+        uint256[] memory rentPayCounts = new uint256[](2);
+        rentPayCounts[0] = 70000000000000000000;
+        rentPayCounts[1] = 90000000000000000000;
+        templates[templateIds.length] = Template(
+            "Rent Pay",
+            1,
+            rentPayCounts,
+            true
+        );
+        templateNames["Rent Pay"] = templateIds.length;
+        templateIds.push(templateIds.length);
+
+        templates[templateIds.length] = Template(
+            "Debt Repayment",
+            2,
+            new uint256[](0),
+            true
+        );
+        templateNames["Debt Repayment"] = templateIds.length;
+        templateIds.push(templateIds.length);
     }
 }
 

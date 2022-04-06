@@ -1,6 +1,6 @@
 const contract = web3.eth
   .contract(abi)
-  .at("0xD7287722122A8984b4a2Ab6E67Cd5E150A9596e1");
+  .at("0x079EAB76597CeF3b835EB2952985E41F7149734B");
 
 function login(username, password, secret) {
   const address = contract.getUserAddress.call(username);
@@ -49,9 +49,24 @@ function createTransfer(toUsername, value, passphrase, categoryId) {
   );
 }
 
+function dashboard() {
+  if (!web3.eth.defaultAccount)
+    return console.error("Error: You're not authenticated!");
+  console.log(`Welcome to Transfer DApp!\nHere's your dashboard:\n`);
+
+  const user = contract.getUser.call(web3.eth.defaultAccount);
+  const balance = eth.getBalance(web3.eth.defaultAccount);
+  let role = user[1] == 0 ? "USER" : "ADMIN";
+
+  console.log(`Username: ${user[0]}`);
+  console.log(`Balance: ${web3.fromWei(balance)} eth`);
+  console.log(`Role: ${role}`);
+  console.log(`Transfers: Use getTransfers()`);
+}
+
 function getTransfers() {
   const ids = contract.getTransferIds.call();
-  console.log(`ID\tFrom\tTo\tValue\tDate\tCategory\tFinished?`);
+  console.log(`ID\tFrom\tTo\tValue\tDate\tCategory\tFinished`);
   for (let i = 0; i < ids.length; i++) {
     try {
       const transfer = contract.getTransfer.call(i);

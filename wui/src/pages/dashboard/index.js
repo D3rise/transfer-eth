@@ -19,14 +19,12 @@ const DashboardPage = () => {
         .call()
         .then((u) => u.role);
 
-      console.log(typeof role);
-      setState((s) => {
-        return { ...s, role };
-      });
+      setState((s) => ({ ...s, role }));
     };
 
     getRole();
-  }, [contract.methods, navigate, user.address]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="dashboardPage">

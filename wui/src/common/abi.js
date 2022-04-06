@@ -38,25 +38,6 @@ const ABI = [
   {
     inputs: [
       {
-        internalType: "string",
-        name: "secret",
-        type: "string",
-      },
-    ],
-    name: "authenticateUser",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint256",
         name: "transferId",
         type: "uint256",
@@ -119,6 +100,56 @@ const ABI = [
     name: "createTransfer",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "username",
+        type: "string",
+      },
+      {
+        internalType: "bytes32",
+        name: "secretHash",
+        type: "bytes32",
+      },
+    ],
+    name: "registerUser",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "username",
+        type: "string",
+      },
+    ],
+    name: "upgradeUserToAdmin",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "secret",
+        type: "string",
+      },
+    ],
+    name: "authenticateUser",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -305,36 +336,6 @@ const ABI = [
     stateMutability: "view",
     type: "function",
   },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "username",
-        type: "string",
-      },
-      {
-        internalType: "bytes32",
-        name: "secretHash",
-        type: "bytes32",
-      },
-    ],
-    name: "registerUser",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "username",
-        type: "string",
-      },
-    ],
-    name: "upgradeUserToAdmin",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
 ];
+
 export default ABI;
